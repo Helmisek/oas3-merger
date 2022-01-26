@@ -1,0 +1,11 @@
+node_modules/
+coverage/
+.vscode
+.env
+.nyc_output/
+temp/*
+.idea
+.db/data/
+dist/
+.eslintcache
+docs/
