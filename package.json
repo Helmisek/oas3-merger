@@ -23,6 +23,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "@types/node": "^17.0.12",
     "yaml": "^1.10.2"
   }
 }
