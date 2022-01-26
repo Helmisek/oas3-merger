@@ -21,5 +21,8 @@
   "homepage": "https://github.com/Helmisek/oas3-merger#readme",
   "devDependencies": {
     "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "yaml": "^1.10.2"
   }
 }
