@@ -15,8 +15,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "moduleResolution": "node",
     "baseUrl": "./",
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "importHelpers": false,
   },
   "exclude": [
     "test"

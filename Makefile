@@ -1,3 +1,8 @@
+## Variables ##
+
+BUILD:=dist
+
+## Targets ##
 compile:
 	npx tsc -p ./tsconfig.json
 
@@ -5,4 +10,4 @@ test:
 	echo "TODO"
 
 merge: compile
-	echo "Do stuff"
+	node $(BUILD)/src/index.js
