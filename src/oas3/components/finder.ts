@@ -20,6 +20,7 @@ export function extractOAS3ComponentData(specification: any): OAS3ComponentData 
                     data: specification[key],
                 }
             }
+            // TODO: add the rest here
             default:
                 throw new Error('Unrecognizable key found in provided specification.')
         }
