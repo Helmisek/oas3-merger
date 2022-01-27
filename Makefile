@@ -1,6 +1,8 @@
 ## Variables ##
 
 BUILD:=dist
+CLI_NAME:=oas3-merger
+CLI:=output/$(CLI_NAME)
 
 ## Targets ##
 compile:
@@ -9,5 +11,10 @@ compile:
 test:
 	echo "TODO"
 
-merge: compile
-	node $(BUILD)/src/index.js
+package: compile
+	npx pkg . --output ./$(CLI)
+
+merge:
+	./$(CLI) merge --input "./docs" --output "./test/swagger.yaml"
+
+build: package merge
