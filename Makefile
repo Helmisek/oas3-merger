@@ -2,7 +2,7 @@
 
 BUILD:=dist
 CLI_NAME:=oas3-merger
-CLI:=output/$(CLI_NAME)
+CLI:=generated/$(CLI_NAME)
 
 ## Targets ##
 compile:
@@ -15,6 +15,6 @@ package: compile
 	npx pkg . --output ./$(CLI)
 
 merge:
-	./$(CLI) merge --input "./docs" --output "./test/swagger.yaml"
+	./$(CLI) merge --input "./docs" --output "./docs/swagger.yaml"
 
 build: package merge

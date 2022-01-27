@@ -9,3 +9,5 @@ temp/*
 dist/
 .eslintcache
 docs/
+generated/
+docs_example/

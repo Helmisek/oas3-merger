@@ -1,10 +1,17 @@
+import {OA3SpecificationStructure, parse} from "../operations/parse";
+import {generateSwagger} from "../operations/generate";
+
 interface MergeCommandOptions {
     input: string
     output: string
 }
 
 function mergeSpecs(options: MergeCommandOptions) {
-    console.log(`Ahoj ${options.input} ${options.output}`)
+    const specs: OA3SpecificationStructure[] = parse(options.input)
+    generateSwagger({
+        outputFile: options.output,
+        specifications: specs,
+    })
 }
 
 export {
