@@ -14,6 +14,12 @@ export function extractOAS3ComponentData(specification: any): OAS3ComponentData 
                     data: specification[key],
                 }
             }
+            case 'schemas': {
+                return {
+                    type: OAS3Component.schemas,
+                    data: specification[key],
+                }
+            }
             default:
                 throw new Error('Unrecognizable key found in provided specification.')
         }

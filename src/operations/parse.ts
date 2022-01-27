@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import {glob} from "glob";
 import * as YAML from 'yaml'
+import * as chalk from "chalk";
 
 const parsingOptions = {
     fileExtension: '.yaml',
@@ -16,7 +17,7 @@ export function parse(dirPath: string): OA3SpecificationStructure[] {
     if (!fs.existsSync(dirPath)) {
         throw Error(`${dirPath} is not a directory`)
     }
-    console.log(`Looking for ${parsingOptions.fileExtension} specs.`)
+    console.log(chalk.yellow(`Looking for ${parsingOptions.fileExtension} specs.`))
 
     const files = glob.sync(constructDirectoryPath(dirPath), {})
     const specFiles = files
@@ -34,7 +35,7 @@ export function parse(dirPath: string): OA3SpecificationStructure[] {
         if (!yaml.components && !yaml.paths) {
             continue
         }
-        console.log(`Parsing... ${file}`)
+        console.log(chalk.cyan(`Parsing... ${file}`))
         specs.push({
             paths: yaml.paths,
             components: yaml.components,

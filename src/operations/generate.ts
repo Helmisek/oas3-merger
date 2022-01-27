@@ -3,6 +3,7 @@ import * as fs from "fs";
 import * as YAML from 'yaml';
 import {extractOAS3ComponentData, OAS3ComponentData} from "../oas3/components/finder";
 import {extractOAS3PathData, OAS3PathData} from "../oas3/paths/finder";
+import * as chalk from "chalk";
 
 interface SwaggerGeneratorOptions {
     readonly outputFile: string
@@ -25,7 +26,10 @@ export function generateSwagger(options: SwaggerGeneratorOptions) {
     }))
 
     components.forEach(component => {
-        template.components[component.type.valueOf()] = component.data
+        template.components[component.type.valueOf()] = {
+            ...template.components[component.type.valueOf()],
+            ...component.data,
+        }
     })
     generalPaths.forEach(paths => paths.forEach(path => {
         template.paths[path.key] = path.data
@@ -37,6 +41,7 @@ export function generateSwagger(options: SwaggerGeneratorOptions) {
 function generateSwaggerFile(outputFile: string, template: any) {
     try {
         fs.writeFileSync(outputFile, YAML.stringify(template))
+        console.log(chalk.green(`Your new OpenAPI 3 definition is available: ${outputFile}`))
     } catch (err) {
         console.error(err)
     }
