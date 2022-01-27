@@ -41,7 +41,7 @@ export function generateSwagger(options: SwaggerGeneratorOptions) {
 function generateSwaggerFile(outputFile: string, template: any) {
     try {
         fs.writeFileSync(outputFile, YAML.stringify(template))
-        console.log(chalk.green(`Your new OpenAPI 3 definition is available: ${outputFile}`))
+        console.log(chalk.green(`Your new OpenAPI 3 specification is available: ${outputFile}`))
     } catch (err) {
         console.error(err)
     }
