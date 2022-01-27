@@ -1,7 +1,8 @@
 import {OA3SpecificationStructure} from "./parse";
 import * as fs from "fs";
 import * as YAML from 'yaml';
-import {extractComponentData, OAS3ComponentData} from "../oas3/components/finder";
+import {extractOAS3ComponentData, OAS3ComponentData} from "../oas3/components/finder";
+import {extractOAS3PathData, OAS3PathData} from "../oas3/paths/finder";
 
 interface SwaggerGeneratorOptions {
     readonly outputFile: string
@@ -14,10 +15,21 @@ const templateFilepath = './docs/swagger.tpl.yaml'
 export function generateSwagger(options: SwaggerGeneratorOptions) {
     const template = YAML.parse(fs.readFileSync(templateFilepath, 'utf-8'))
     template.components = {}
-    const components = findComponents(options.specifications)
+    template.paths = {}
+
+    const components = findComponents(options.specifications.filter(spec => {
+        return spec.components != null
+    }))
+    const generalPaths = findPaths(options.specifications.filter(spec => {
+        return spec.paths != null
+    }))
+
     components.forEach(component => {
         template.components[component.type.valueOf()] = component.data
     })
+    generalPaths.forEach(paths => paths.forEach(path => {
+        template.paths[path.key] = path.data
+    }))
 
     generateSwaggerFile(options.outputFile, template)
 }
@@ -32,6 +44,12 @@ function generateSwaggerFile(outputFile: string, template: any) {
 
 function findComponents(specifications: OA3SpecificationStructure[]): OAS3ComponentData[] {
     return specifications.map(spec => {
-        return extractComponentData(spec.components)
+        return extractOAS3ComponentData(spec.components)
+    })
+}
+
+function findPaths(specifications: OA3SpecificationStructure[]): OAS3PathData[][] {
+    return specifications.map(spec => {
+        return extractOAS3PathData(spec.paths)
     })
 }

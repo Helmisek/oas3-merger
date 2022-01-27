@@ -5,7 +5,7 @@ export interface OAS3ComponentData {
     data: any
 }
 
-export function extractComponentData(specification: any): OAS3ComponentData {
+export function extractOAS3ComponentData(specification: any): OAS3ComponentData {
     return Object.keys(specification).map(key => {
         switch (key) {
             case 'securitySchemes': {
