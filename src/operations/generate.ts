@@ -15,25 +15,25 @@ const templateFilepath = './docs/swagger.tpl.yaml'
 
 export function generateSwagger(options: SwaggerGeneratorOptions) {
     const template = YAML.parse(fs.readFileSync(templateFilepath, 'utf-8'))
-    template.components = {}
     template.paths = {}
+    template.components = {}
 
-    const components = findComponents(options.specifications.filter(spec => {
-        return spec.components != null
-    }))
     const generalPaths = findPaths(options.specifications.filter(spec => {
         return spec.paths != null
     }))
+    const components = findComponents(options.specifications.filter(spec => {
+        return spec.components != null
+    }))
 
+    generalPaths.forEach(paths => paths.forEach(path => {
+        template.paths[path.key] = path.data
+    }))
     components.forEach(component => {
         template.components[component.type.valueOf()] = {
             ...template.components[component.type.valueOf()],
             ...component.data,
         }
     })
-    generalPaths.forEach(paths => paths.forEach(path => {
-        template.paths[path.key] = path.data
-    }))
 
     generateSwaggerFile(options.outputFile, template)
 }
