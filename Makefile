@@ -1,20 +1,19 @@
 ## Variables ##
 
 BUILD:=dist
-CLI_NAME:=oas3-merger
-CLI:=generated/$(CLI_NAME)
+CLI:=oas3-merger
 
 ## Targets ##
 compile:
 	npx tsc -p ./tsconfig.json
 
+install:
+	npm i -g .
+
 test:
 	echo "TODO"
 
-package: compile
-	npx pkg . --output ./$(CLI)
-
 merge:
-	./$(CLI) merge --input "./docs" --output "./docs/swagger.yaml" --config "./docs/configuration.yaml"
+	$(CLI) merge --input "./docs" --output "./docs/swagger.yaml" --config "./docs/configuration.yaml"
 
-build: package merge
+build: compile install merge
