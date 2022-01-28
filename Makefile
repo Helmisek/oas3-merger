@@ -16,4 +16,7 @@ test:
 merge:
 	$(CLI) merge --input "./docs" --output "./docs/swagger.yaml" --config "./docs/configuration.yaml"
 
-build: compile install merge
+validate:
+	npx swagger-cli validate ./docs/swagger.yaml
+
+build: compile install merge validate
