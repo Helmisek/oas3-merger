@@ -15,6 +15,6 @@ package: compile
 	npx pkg . --output ./$(CLI)
 
 merge:
-	./$(CLI) merge --input "./docs" --output "./docs/swagger.yaml"
+	./$(CLI) merge --input "./docs" --output "./docs/swagger.yaml" --config "./docs/configuration.yaml"
 
 build: package merge

@@ -4,7 +4,7 @@ import * as YAML from 'yaml'
 import * as chalk from "chalk";
 
 const parsingOptions = {
-    fileExtension: '.yaml',
+    fileExtensions: ['.yaml', '.yml'],
     primaryFile: 'swagger.yaml'
 }
 
@@ -13,20 +13,26 @@ export interface OA3SpecificationStructure {
     components?: any
 }
 
-export function parse(dirPath: string): OA3SpecificationStructure[] {
-    if (!fs.existsSync(dirPath)) {
-        throw Error(`${dirPath} is not a directory`)
-    }
-    console.log(chalk.yellow(`Looking for ${parsingOptions.fileExtension} specs.`))
+export interface ParsingOptions {
+    readonly dirPath: string
+    readonly configurationFile: string
+}
 
-    const files = glob.sync(constructDirectoryPath(dirPath), {})
+export function parse(options: ParsingOptions): OA3SpecificationStructure[] {
+    if (!fs.existsSync(options.dirPath)) {
+        throw Error(`${options.dirPath} is not a directory`)
+    }
+    console.log(chalk.yellow(`Looking for [${parsingOptions.fileExtensions.join(" | ")}] specs.`))
+
+    const files = glob.sync(constructDirectoryPath(options.dirPath), {})
     const specFiles = files
         .filter(file => !fs.lstatSync(file).isDirectory())
-        .filter(file => file.match(new RegExp(`.*\.(${parsingOptions.fileExtension})`, 'ig')))
+        .filter(file => file.match(new RegExp(`.*\.(${parsingOptions.fileExtensions.join('|')})`, 'ig')))
         .filter(file => !file.endsWith(parsingOptions.primaryFile))
+        .filter(file => file !== options.configurationFile)
 
     if (!specFiles) {
-        console.log(`No ${parsingOptions.fileExtension} specs found in ${dirPath}.`)
+        console.log(`No [${parsingOptions.fileExtensions.join(" | ")}] specs found in ${options.dirPath}.`)
     }
 
     const specs: OA3SpecificationStructure[] = []

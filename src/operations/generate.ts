@@ -6,15 +6,13 @@ import {extractOAS3PathData, OAS3PathData} from "../oas3/paths/finder";
 import * as chalk from "chalk";
 
 interface SwaggerGeneratorOptions {
+    readonly configurationSpecFile: string
     readonly outputFile: string
     readonly specifications: OA3SpecificationStructure[]
 }
 
-// TODO: get rid of this later by introducing configuration file
-const templateFilepath = './docs/swagger.tpl.yaml'
-
 export function generateSwagger(options: SwaggerGeneratorOptions) {
-    const template = YAML.parse(fs.readFileSync(templateFilepath, 'utf-8'))
+    const template = YAML.parse(fs.readFileSync(options.configurationSpecFile, 'utf-8'))
     template.paths = {}
     template.components = {}
 
