@@ -5,6 +5,10 @@ import {extractOAS3ComponentData, OAS3ComponentData} from "../oas3/components/fi
 import {extractOAS3PathData, OAS3PathData} from "../oas3/paths/finder";
 import * as chalk from "chalk";
 
+const generatedFileNotice = '###############################################\n' +
+    '# GENERATED - DO NOT MANUALLY EDIT THIS FILE. #\n' +
+    '###############################################\n'
+
 interface SwaggerGeneratorOptions {
     readonly configurationSpecFile: string
     readonly outputFile: string
@@ -38,7 +42,8 @@ export function generateSwagger(options: SwaggerGeneratorOptions) {
 
 function generateSwaggerFile(outputFile: string, template: any) {
     try {
-        fs.writeFileSync(outputFile, YAML.stringify(template))
+        const fileContent = YAML.stringify(template)
+        fs.writeFileSync(outputFile, `${generatedFileNotice}\n${fileContent}`)
         console.log(chalk.green(`Your new OpenAPI 3 specification is available: ${outputFile}`))
     } catch (err) {
         console.error(err)
