@@ -5,6 +5,9 @@ import {extractOAS3ComponentData, OAS3ComponentData} from "../oas3/components/fi
 import {extractOAS3PathData, OAS3PathData} from "../oas3/paths/finder";
 import * as chalk from "chalk";
 
+const SwaggerParser = require("@apidevtools/swagger-parser");
+
+
 const generatedFileNotice = '###############################################\n' +
     '# GENERATED - DO NOT MANUALLY EDIT THIS FILE. #\n' +
     '###############################################\n'
@@ -15,7 +18,7 @@ interface SwaggerGeneratorOptions {
     readonly specifications: OA3SpecificationStructure[]
 }
 
-export function generateSwagger(options: SwaggerGeneratorOptions) {
+export async function generateSwagger(options: SwaggerGeneratorOptions) {
     const template = YAML.parse(fs.readFileSync(options.configurationSpecFile, 'utf-8'))
     template.paths = {}
     template.components = {}
@@ -37,17 +40,42 @@ export function generateSwagger(options: SwaggerGeneratorOptions) {
         }
     })
 
-    generateSwaggerFile(options.outputFile, template)
+    await generateSwaggerFile(options.outputFile, template)
 }
 
-function generateSwaggerFile(outputFile: string, template: any) {
+async function validateSpecificationFile(outputFile: string) {
+    console.log(chalk.blueBright(`Validating generated specification...`))
+    return await SwaggerParser.validate(outputFile, {
+        parse: {
+            json: false,
+            yaml: {
+                allowEmpty: false,
+            }
+        },
+    }) != null;
+}
+
+async function generateSwaggerFile(outputFile: string, template: any) {
     try {
         const fileContent = YAML.stringify(template)
         const fileContentFixed = fileContent.replace(new RegExp("(?<=example: )(.*?)$", "gm"), '"$1"')
+
+        console.log(chalk.magenta(`Generating your OpenAPI 3 API specification: ${outputFile}`))
         fs.writeFileSync(outputFile, `${generatedFileNotice}\n${fileContentFixed}`)
-        console.log(chalk.green(`Your new OpenAPI 3 specification is available: ${outputFile}`))
-    } catch (err) {
-        console.error(err)
+
+        const isSpecificationValid = await validateSpecificationFile(outputFile);
+
+        if (isSpecificationValid) {
+            console.log(chalk.green(`Your new OpenAPI 3 specification is valid and available at: ${outputFile}`))
+        } else {
+            console.log(chalk.green(`Your OpenAPI 3 specification is invalid and needs to be regenerated after fixing errors.`))
+        }
+    } catch (err: any) {
+        if (err.message) {
+            console.error(chalk.red(err.message))
+        } else {
+            console.error(chalk.red(err))
+        }
     }
 }
 

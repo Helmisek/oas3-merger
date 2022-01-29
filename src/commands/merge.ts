@@ -7,12 +7,12 @@ interface MergeCommandOptions {
     config: string
 }
 
-function mergeSpecs(options: MergeCommandOptions) {
+async function mergeSpecs(options: MergeCommandOptions) {
     const specs: OA3SpecificationStructure[] = parse({
         configurationFile: options.config,
         dirPath: options.input,
     })
-    generateSwagger({
+    await generateSwagger({
         configurationSpecFile: options.config,
         outputFile: options.output,
         specifications: specs,
