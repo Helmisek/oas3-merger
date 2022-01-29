@@ -43,7 +43,8 @@ export function generateSwagger(options: SwaggerGeneratorOptions) {
 function generateSwaggerFile(outputFile: string, template: any) {
     try {
         const fileContent = YAML.stringify(template)
-        fs.writeFileSync(outputFile, `${generatedFileNotice}\n${fileContent}`)
+        const fileContentFixed = fileContent.replace(new RegExp("(?<=example: )(.*?)$", "gm"), '"$1"')
+        fs.writeFileSync(outputFile, `${generatedFileNotice}\n${fileContentFixed}`)
         console.log(chalk.green(`Your new OpenAPI 3 specification is available: ${outputFile}`))
     } catch (err) {
         console.error(err)
