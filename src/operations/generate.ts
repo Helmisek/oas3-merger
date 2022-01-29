@@ -7,11 +7,6 @@ import * as chalk from "chalk";
 
 const SwaggerParser = require("@apidevtools/swagger-parser");
 
-
-const generatedFileNotice = '###############################################\n' +
-    '# GENERATED - DO NOT MANUALLY EDIT THIS FILE. #\n' +
-    '###############################################\n'
-
 interface SwaggerGeneratorOptions {
     readonly configurationSpecFile: string
     readonly outputFile: string
@@ -59,6 +54,7 @@ async function generateSwaggerFile(outputFile: string, template: any) {
     try {
         const fileContent = YAML.stringify(template)
         const fileContentFixed = fileContent.replace(new RegExp("(?<=example: )(.*?)$", "gm"), '"$1"')
+        const generatedFileNotice = fs.readFileSync('./assets/generated_notice.txt')
 
         console.log(chalk.magenta(`Generating your OpenAPI 3 API specification: ${outputFile}`))
         fs.writeFileSync(outputFile, `${generatedFileNotice}\n${fileContentFixed}`)
