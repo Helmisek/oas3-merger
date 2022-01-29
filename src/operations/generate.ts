@@ -7,9 +7,7 @@ import {
 } from '../oas3/components/finder'
 import { extractOAS3PathData, OAS3PathData } from '../oas3/paths/finder'
 import * as chalk from 'chalk'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const SwaggerParser = require('@apidevtools/swagger-parser')
+import { validateSpecificationFile } from './validate'
 
 interface SwaggerGeneratorOptions {
   readonly configurationSpecFile: string
@@ -92,7 +90,7 @@ async function generateSwaggerFile(outputFile: string, template: any) {
       )
     } else {
       console.log(
-        chalk.green(
+        chalk.red(
           `Your OpenAPI 3 specification is invalid and needs to be regenerated after fixing errors.`,
         ),
       )
@@ -104,18 +102,4 @@ async function generateSwaggerFile(outputFile: string, template: any) {
       console.error(chalk.red(err))
     }
   }
-}
-
-async function validateSpecificationFile(outputFile: string) {
-  console.log(chalk.blueBright(`Validating generated specification...`))
-  return (
-    (await SwaggerParser.validate(outputFile, {
-      parse: {
-        json: false,
-        yaml: {
-          allowEmpty: false,
-        },
-      },
-    })) != null
-  )
 }

@@ -20,9 +20,13 @@ test:
 merge:
 	$(CLI) merge --input "./docs" --output "./docs/swagger.yaml" --config "./docs/configuration.yaml"
 
-.PHONY: validate
+.PHONY: validate-external
 validate:
 	npx swagger-cli validate ./docs/swagger.yaml
+
+.PHONY: validate
+validate:
+	$(CLI) validate --input "./docs/swagger.yaml"
 
 .PHONY: build
 build: compile install merge
