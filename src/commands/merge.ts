@@ -9,12 +9,14 @@ interface MergeCommandOptions {
   input: string
   output: string
   config: string
+  ignore?: string
 }
 
 async function mergeSpecs(options: MergeCommandOptions) {
   const specs: OA3SpecificationStructure[] = await parseSpecs({
     configurationFile: options.config,
     dirPath: options.input,
+    ignorePathsRegex: options.ignore,
   })
 
   const configurationBasicSpec = YAML.parse(
@@ -44,6 +46,10 @@ function useMergeSpecsCommand(program: typeof CommanderProgram) {
     .requiredOption(
       '--config <config>',
       'The basic Open API 3 specification file to use.',
+    )
+    .option(
+      '--ignore <ignore>',
+      'Define Regex string to ignore YAML files you want to avoid parsing.',
     )
     .action(mergeSpecs)
 }
