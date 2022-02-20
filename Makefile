@@ -14,22 +14,22 @@ install:
 
 .PHONY: test
 test:
-	echo "TODO"
+	NODE_ENV=test npx mocha
 
 .PHONY: merge
 merge:
-	$(CLI) merge --input "./docs" --output "./docs/swagger.yaml" --config "./docs/configuration.yaml"
+	$(CLI) merge --input "./example" --output "./example/swagger.yaml" --config "./example/configuration.yaml"
 
 .PHONY: validate-external
-validate:
-	npx swagger-cli validate ./docs/swagger.yaml
+validate-external:
+	npx swagger-cli validate ./example/swagger.yaml
 
 .PHONY: validate
 validate:
-	$(CLI) validate --input "./docs/swagger.yaml"
+	$(CLI) validate --input "./example/swagger.yaml"
 
 .PHONY: build
-build: compile install merge
+build: compile install merge validate
 
 .PHONY: lint-staged
 lint-staged:
@@ -37,7 +37,8 @@ lint-staged:
 
 .PHONY: lint
 lint:
-	npx eslint --cache --fix src/
+	npx eslint --cache --fix ./src/ ./test/
 
+.PHONY: format
 format:
-	npx prettier --write src/
+	npx prettier --write ./src ./test

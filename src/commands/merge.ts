@@ -1,6 +1,9 @@
-import { OA3SpecificationStructure, parse } from '../operations/parse'
-import { generateSwagger } from '../operations/generate'
+import { OA3SpecificationStructure, parseSpecs } from '../operations/parseSpecs'
+import { generateSwaggerDocument } from '../operations/generate'
 import type { program as CommanderProgram } from 'commander'
+import { generateSwaggerFile } from '../operations/fileWriter'
+import * as YAML from 'yaml'
+import * as fs from 'fs'
 
 interface MergeCommandOptions {
   input: string
@@ -9,15 +12,21 @@ interface MergeCommandOptions {
 }
 
 async function mergeSpecs(options: MergeCommandOptions) {
-  const specs: OA3SpecificationStructure[] = parse({
+  const specs: OA3SpecificationStructure[] = await parseSpecs({
     configurationFile: options.config,
     dirPath: options.input,
   })
-  await generateSwagger({
-    configurationSpecFile: options.config,
-    outputFile: options.output,
+
+  const configurationBasicSpec = YAML.parse(
+    fs.readFileSync(options.config, 'utf-8'),
+  )
+
+  const template = await generateSwaggerDocument({
+    configurationBaseSpec: configurationBasicSpec,
     specifications: specs,
   })
+
+  await generateSwaggerFile(options.output, template)
 }
 
 function useMergeSpecsCommand(program: typeof CommanderProgram) {

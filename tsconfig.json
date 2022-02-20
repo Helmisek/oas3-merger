@@ -15,7 +15,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "moduleResolution": "node",
     "baseUrl": "./",
-    "importHelpers": false
+    "importHelpers": false,
+    "resolveJsonModule": true,
   },
   "exclude": ["test"]
 }

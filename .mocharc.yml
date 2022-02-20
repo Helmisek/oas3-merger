@@ -1,0 +1,14 @@
+check-leaks: true
+color: true
+recursive: true
+timeout: 5000
+extension:
+  - ts
+file:
+  - ./test/setup.ts
+
+require:
+  - 'ts-node/register/transpile-only'
+  - 'test/setup.ts'
+
+spec: test/**/*.spec.ts

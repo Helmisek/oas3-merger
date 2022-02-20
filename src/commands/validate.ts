@@ -1,6 +1,7 @@
 import { program as CommanderProgram } from 'commander'
 import { validateSpecificationFile } from '../operations/validate'
 import * as chalk from 'chalk'
+import { logInfo } from '../utils/logger'
 
 interface ValidateCommandOptions {
   input: string
@@ -9,9 +10,9 @@ interface ValidateCommandOptions {
 async function validateSpecs(options: ValidateCommandOptions) {
   const isSpecificationValid = await validateSpecificationFile(options.input)
   if (isSpecificationValid) {
-    console.log(chalk.green(`Your OpenAPI 3 specification is valid.`))
+    logInfo(chalk.green(`Your OpenAPI 3 specification is valid.`))
   } else {
-    console.log(
+    logInfo(
       chalk.red(
         `Your OpenAPI 3 specification is invalid, proceed to fix the errors before using it.`,
       ),
