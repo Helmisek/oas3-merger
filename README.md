@@ -1,6 +1,6 @@
 # OAS3 (OpenAPI 3) Merger Tool
 
-## Introduction
+## Introduction 🔖
 
 This is a Node.js CLI tooling built for the purpose of managing big Open API 3 specifications where having everything in
 a single file is not maintainable anymore.
@@ -11,14 +11,14 @@ file input which must now contain everything which imo makes it a mess to read a
 To deal with this you have to reorganize your documentation specifications into multiple files & directories where you
 would normally have to start using relative path referencing.
 
-So instead of direct type based ('../pets/..' vs \#components/schemas/...).
+So instead of direct type based (**'../pets/..'** vs **#components/schemas/...**).
 
 **This tooling solves the issue** by allowing you to split all the files and reference the components normally via
 component references and then combine all specifications into a singular YAML file again. That way your code is still
 maintainable and the produced output is well-formatted, and you can leverage all the features Swagger provides, all that
 while not having to take care of the main Swagger file.
 
-## Example
+## Example 📝
 
 In order to better understand the solution and problem itself, take a look at `./example` directory.
 
@@ -32,7 +32,7 @@ There you can find a usual representation of API documentation this tooling work
 
 `index.html` is providing you the UI for your OAS3 Swagger documentation whilst only referencing `swagger.yaml`.
 
-## How to use
+## How to use ❓
 
 The tooling relies on the developer to actually create a specific folder containing all the documentation specification
 files and then using the tool on that file path.
@@ -44,12 +44,12 @@ To see how you should ideally structure your documentation, take a look at `./ex
 
 There are two separate tooling commands available at the moment:
 
-- merge
-- validate
+- `merge`
+- `validate`
 
 With each serving a different purpose and offering various command options explained in sections below.
 
-### Merge
+### Merge 📎
 
 By calling `oas3-merger merge` with configurable options you can adjust the necessary merging behavior.
 
@@ -64,7 +64,7 @@ Example:
 
 `oas3-merger merge --input "./example" --output "./example/swagger.yaml" --config "./example/configuration.yaml"`
 
-### Validate
+### Validate ✔️
 
 By calling `oas3-merger validate` with following available options you can determine what final specification to
 validate.
@@ -77,6 +77,6 @@ Example:
 
 `oas3-merger validate --input "./example/swagger.yaml"`
 
-## Contribute
+## Contribute ⭐
 
 If you want to contribute, just create a PR or an issue to post ideas.
