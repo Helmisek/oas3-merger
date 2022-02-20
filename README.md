@@ -58,9 +58,9 @@ By calling `oas3-merger merge` with configurable options you can adjust the nece
 | `input`  | Path to directory containing your documentation specifications.                            | Yes      | `./docs`                    |
 | `output` | Defines where to save the newly generated Swagger documentation to.                        | Yes      | `./docs/swagger.yaml`       |
 | `config` | Defines the path to the configuration (base) yaml template file.                           | Yes      | `./docs/configuration.yaml` |
-| `ignore` | Defines a RegExp string used to filter out unwanted paths when scanning `input` directory. | No       | `__helpers__.*`             |
+| `ignore` | Defines a RegExp string used to filter out unwanted paths when scanning `input` directory. | No       | `(__helpers__).*`           |
 
-Example:
+**Example**:
 
 `oas3-merger merge --input "./example" --output "./example/swagger.yaml" --config "./example/configuration.yaml"`
 
@@ -73,7 +73,7 @@ validate.
 |---------|-------------------------------------------------|----------|-----------------------|
 | `input` | Complete Swagger YAML file to validate against. | Yes      | `./docs/swagger.yaml` |
 
-Example:
+**Example**:
 
 `oas3-merger validate --input "./example/swagger.yaml"`
 
